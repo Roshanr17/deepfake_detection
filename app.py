@@ -5,18 +5,21 @@ from pathlib import Path
 import cv2
 import torch
 from flask import Flask, flash, jsonify, redirect, render_template, request, url_for
+from werkzeug.exceptions import RequestEntityTooLarge
 from werkzeug.utils import secure_filename
 
 from train_deepfake_detector import build_model, read_video_frames
 
 
-UPLOAD_FOLDER = Path("static/uploads")
-MODEL_PATH = Path("models/deepfake_detector_best.pt")
+BASE_DIR = Path(__file__).resolve().parent
+UPLOAD_FOLDER = BASE_DIR / "static" / "uploads"
+MODEL_PATH = BASE_DIR / "models" / "deepfake_detector_best.pt"
 ALLOWED_EXTENSIONS = {"mp4", "mov", "avi", "webm", "mkv"}
 
 app = Flask(__name__)
 app.secret_key = "change_this_secret"
 app.config["UPLOAD_FOLDER"] = str(UPLOAD_FOLDER)
+app.config["MAX_CONTENT_LENGTH"] = 250 * 1024 * 1024
 UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
 
@@ -206,6 +209,12 @@ def api_predict(filename):
             "fake_probability": prediction["fake_probability"],
         }
     )
+
+
+@app.errorhandler(RequestEntityTooLarge)
+def handle_large_file(error):
+    flash("Uploaded file is too large. Maximum file size is 250MB.")
+    return redirect(request.url)
 
 
 if __name__ == "__main__":
