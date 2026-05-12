@@ -1,0 +1,58 @@
+{
+  "config": {
+    "fake_dir": "Deepfakes",
+    "real_dir": "original",
+    "output_dir": "models",
+    "epochs": 4,
+    "batch_size": 8,
+    "frames_per_video": 3,
+    "image_size": 160,
+    "learning_rate": 0.0005,
+    "weight_decay": 0.0001,
+    "val_ratio": 0.2,
+    "seed": 42,
+    "num_workers": 0,
+    "model": "mobilenet",
+    "face_crop": true,
+    "max_videos_per_class": 200,
+    "pretrained": true,
+    "freeze_backbone": true
+  },
+  "class_names": [
+    "real",
+    "fake"
+  ],
+  "train_count": 320,
+  "val_count": 80,
+  "best_val_accuracy": 0.65,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.7114306531846524,
+      "train_accuracy": 0.559375,
+      "val_loss": 0.7053788065910339,
+      "val_accuracy": 0.45
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.6200839318335056,
+      "train_accuracy": 0.6375,
+      "val_loss": 0.6960373938083648,
+      "val_accuracy": 0.5375
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.5392040282487869,
+      "train_accuracy": 0.73125,
+      "val_loss": 0.6758518517017365,
+      "val_accuracy": 0.65
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.5440572518855333,
+      "train_accuracy": 0.71875,
+      "val_loss": 0.6286709755659103,
+      "val_accuracy": 0.625
+    }
+  ]
+}

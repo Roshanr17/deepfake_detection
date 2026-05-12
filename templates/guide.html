@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block title %}User Guide - Deepfake Detector{% endblock %}
+
+{% block extra_css %}
+<style>
+    .guide-container {
+        background: white;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .guide-container h2 {
+        color: var(--primary);
+        margin-top: 30px;
+        margin-bottom: 20px;
+        font-size: 1.8em;
+        border-bottom: 3px solid var(--primary);
+        padding-bottom: 10px;
+    }
+    
+    .guide-container h3 {
+        color: var(--primary-dark);
+        margin-top: 20px;
+        margin-bottom: 15px;
+        font-size: 1.3em;
+    }
+    
+    .step-box {
+        background: linear-gradient(135deg, var(--light) 0%, #e9ecef 100%);
+        padding: 20px;
+        border-radius: 12px;
+        margin: 15px 0;
+        border-left: 4px solid var(--primary);
+    }
+    
+    .step-box .step-number {
+        display: inline-block;
+        background: var(--primary);
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+    
+    .step-box h4 {
+        color: var(--dark);
+        margin-bottom: 10px;
+    }
+    
+    .info-box {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        border: 1px solid #c3e6cb;
+        border-left: 4px solid var(--success);
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        color: #155724;
+    }
+    
+    .warning-box {
+        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+        border: 1px solid #ffeaa7;
+        border-left: 4px solid var(--warning);
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        color: #856404;
+    }
+    
+    .error-box {
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        border: 1px solid #f5c6cb;
+        border-left: 4px solid var(--danger);
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        color: #721c24;
+    }
+    
+    .code-block {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 15px;
+        overflow-x: auto;
+        margin: 15px 0;
+        color: #333;
+    }
+    
+    .code-block code {
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+    }
+    
+    .faq-item {
+        margin: 20px 0;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid var(--primary);
+    }
+    
+    .faq-item strong {
+        color: var(--primary);
+        display: block;
+        margin-bottom: 10px;
+    }
+    
+    .supported-formats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin: 15px 0;
+    }
+    
+    .format-card {
+        background: white;
+        border: 2px solid var(--primary);
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    .format-card:hover {
+        background: var(--primary);
+        color: white;
+    }
+    
+    .format-card i {
+        font-size: 1.5em;
+        display: block;
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="guide-container">
+    <h1 style="color: var(--primary); margin-bottom: 30px;">User Guide</h1>
+    
+    <h2><i class="fas fa-play-circle"></i> Getting Started</h2>
+    <p>Follow these simple steps to detect deepfakes in your videos:</p>
+    
+    <div class="step-box">
+        <div class="step-number">1</div>
+        <h4>Upload Your Video</h4>
+        <p>Click on the upload area or drag and drop your video file. We support MP4, MOV, AVI, WebM, and MKV formats.</p>
+    </div>
+    
+    <div class="step-box">
+        <div class="step-number">2</div>
+        <h4>Wait for Analysis</h4>
+        <p>Our AI system will analyze the video frames. Processing time depends on video length, usually 30 seconds to 2 minutes.</p>
+    </div>
+    
+    <div class="step-box">
+        <div class="step-number">3</div>
+        <h4>Review Results</h4>
+        <p>Get detailed analysis including confidence scores, probability distribution, and explanations for the prediction.</p>
+    </div>
+    
+    
+    <h2><i class="fas fa-file-video"></i> Supported Video Formats</h2>
+    <div class="supported-formats">
+        <div class="format-card">
+            <i class="fas fa-file-video"></i>
+            <strong>MP4</strong>
+        </div>
+        <div class="format-card">
+            <i class="fas fa-file-video"></i>
+            <strong>MOV</strong>
+        </div>
+        <div class="format-card">
+            <i class="fas fa-file-video"></i>
+            <strong>AVI</strong>
+        </div>
+        <div class="format-card">
+            <i class="fas fa-file-video"></i>
+            <strong>WebM</strong>
+        </div>
+        <div class="format-card">
+            <i class="fas fa-file-video"></i>
+            <strong>MKV</strong>
+        </div>
+    </div>
+    
+    
+    <h2><i class="fas fa-lightbulb"></i> Understanding Results</h2>
+    
+    <h3>Confidence Score</h3>
+    <p>The confidence score ranges from 0% to 100% and indicates how confident our system is in its prediction.</p>
+    
+    <div class="faq-item">
+        <strong>90-100% Confidence</strong>
+        High confidence. The prediction is very reliable. Use this result with confidence.
+    </div>
+    
+    <div class="faq-item">
+        <strong>70-90% Confidence</strong>
+        Good confidence. The prediction is likely reliable. Recommended for most applications.
+    </div>
+    
+    <div class="faq-item">
+        <strong>50-70% Confidence</strong>
+        Moderate confidence. Results are less certain. Consider additional verification.
+    </div>
+    
+    <div class="faq-item">
+        <strong>Below 50% Confidence</strong>
+        Low confidence. Result is uncertain. Definitely verify through other means.
+    </div>
+    
+    
+    <h2><i class="fas fa-exclamation-circle"></i> Best Practices</h2>
+    
+    <div class="info-box">
+        <strong><i class="fas fa-check"></i> Good Practice:</strong> Use videos with clear facial visibility for best results.
+    </div>
+    
+    <div class="info-box">
+        <strong><i class="fas fa-check"></i> Good Practice:</strong> For multiple faces, the system analyzes the most prominent face.
+    </div>
+    
+    <div class="warning-box">
+        <strong><i class="fas fa-exclamation-triangle"></i> Warning:</strong> Very short videos (&lt;2 seconds) may have less reliable results.
+    </div>
+    
+    <div class="warning-box">
+        <strong><i class="fas fa-exclamation-triangle"></i> Warning:</strong> Heavily compressed or low-resolution videos may affect accuracy.
+    </div>
+    
+    <div class="error-box">
+        <strong><i class="fas fa-times-circle"></i> Important:</strong> Videos with no detected faces will be rejected. Ensure your video contains at least one visible face.
+    </div>
+    
+    
+    <h2><i class="fas fa-question-circle"></i> Frequently Asked Questions</h2>
+    
+    <div class="faq-item">
+        <strong>Q: How accurate is your detector?</strong>
+        A: Our system achieves 95%+ accuracy on standard deepfake datasets. However, accuracy can vary based on video quality and deepfake technique used.
+    </div>
+    
+    <div class="faq-item">
+        <strong>Q: What happens to my uploaded videos?</strong>
+        A: Videos are processed temporarily and deleted automatically after analysis. We don't store or use your videos for any other purpose.
+    </div>
+    
+    <div class="faq-item">
+        <strong>Q: How long does analysis take?</strong>
+        A: Typical analysis takes 30 seconds to 2 minutes depending on video length and server load. Very long videos may take longer.
+    </div>
+    
+    <div class="faq-item">
+        <strong>Q: Can I use this for legal purposes?</strong>
+        A: This tool is for informational purposes. For legal proceedings, consult with forensic experts and use multiple verification methods.
+    </div>
+    
+    <div class="faq-item">
+        <strong>Q: What video length is recommended?</strong>
+        A: Videos between 30 seconds and 10 minutes work best. Very short (&lt;30 seconds) or very long (&gt;30 minutes) videos may have varying results.
+    </div>
+    
+    
+    <h2><i class="fas fa-wrench"></i> Technical Details</h2>
+    
+    <h3>Model Architecture</h3>
+    <p>We use MobileNet-v3 as the frame feature extractor, which provides:</p>
+    <ul style="margin-left: 20px; color: #555; line-height: 1.8; margin-bottom: 15px;">
+        <li>Efficient deep learning model</li>
+        <li>Fast inference on CPU</li>
+        <li>High accuracy with lower computational cost</li>
+    </ul>
+    
+    <h3>Processing Pipeline</h3>
+    <div class="code-block">
+        <code>
+1. Video Input → Frame Extraction<br>
+2. Face Detection via Cascade Classifiers<br>
+3. Face Preprocessing & Normalization<br>
+4. Frame Analysis via MobileNet-v3<br>
+5. Classification & Confidence Scoring<br>
+6. Result Aggregation & Output
+        </code>
+    </div>
+    
+</div>
+{% endblock %}

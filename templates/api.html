@@ -1,0 +1,423 @@
+{% extends "base.html" %}
+
+{% block title %}API Documentation - Deepfake Detector{% endblock %}
+
+{% block extra_css %}
+<style>
+    .api-container {
+        background: white;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .api-container h2 {
+        color: var(--primary);
+        margin-top: 30px;
+        margin-bottom: 20px;
+        font-size: 1.8em;
+        border-bottom: 3px solid var(--primary);
+        padding-bottom: 10px;
+    }
+    
+    .api-container h3 {
+        color: var(--primary-dark);
+        margin-top: 20px;
+        margin-bottom: 15px;
+        font-size: 1.3em;
+    }
+    
+    .endpoint {
+        background: #f8f9fa;
+        border-left: 4px solid var(--primary);
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .endpoint-method {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.9em;
+        margin-bottom: 10px;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .method-post {
+        background: #fff3cd;
+        color: #856404;
+    }
+    
+    .method-get {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .endpoint-path {
+        font-family: 'Courier New', monospace;
+        font-size: 1.05em;
+        font-weight: 600;
+        color: var(--dark);
+        margin: 10px 0;
+    }
+    
+    .endpoint-description {
+        color: #555;
+        margin: 10px 0;
+        line-height: 1.6;
+    }
+    
+    .code-block {
+        background: #2c3e50;
+        color: #ecf0f1;
+        border-radius: 8px;
+        padding: 20px;
+        overflow-x: auto;
+        margin: 15px 0;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+        line-height: 1.6;
+    }
+    
+    .code-block .comment {
+        color: #7f8c8d;
+    }
+    
+    .code-block .key {
+        color: #3498db;
+    }
+    
+    .code-block .string {
+        color: #2ecc71;
+    }
+    
+    .code-block .number {
+        color: #e74c3c;
+    }
+    
+    .params-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+    }
+    
+    .params-table thead {
+        background: var(--light);
+    }
+    
+    .params-table th {
+        padding: 12px;
+        text-align: left;
+        color: var(--dark);
+        font-weight: 600;
+        border-bottom: 2px solid #dee2e6;
+    }
+    
+    .params-table td {
+        padding: 12px;
+        border-bottom: 1px solid #dee2e6;
+    }
+    
+    .params-table .type {
+        background: #f8f9fa;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: monospace;
+        color: var(--primary);
+        font-weight: 600;
+    }
+    
+    .response-example {
+        margin: 15px 0;
+    }
+    
+    .response-example h4 {
+        color: var(--dark);
+        margin-bottom: 10px;
+    }
+    
+    .status-code {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    
+    .status-200 {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .status-400 {
+        background: #fff3cd;
+        color: #856404;
+    }
+    
+    .status-404 {
+        background: #f8d7da;
+        color: #721c24;
+    }
+    
+    .note {
+        background: #d1ecf1;
+        border-left: 4px solid #0c5460;
+        color: #0c5460;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+    }
+    
+    .info {
+        background: #d4edda;
+        border-left: 4px solid #155724;
+        color: #155724;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="api-container">
+    <h1 style="color: var(--primary); margin-bottom: 30px;">API Documentation</h1>
+    
+    <div class="note">
+        <strong><i class="fas fa-info-circle"></i> Note:</strong> The API is currently in open beta. Please report any issues or feature requests.
+    </div>
+    
+    <h2><i class="fas fa-rocket"></i> Getting Started</h2>
+    <p>The Deepfake Detector API allows you to programmatically analyze videos for deepfake content. All requests are processed asynchronously.</p>
+    
+    
+    <h2><i class="fas fa-server"></i> Base URL</h2>
+    <div class="code-block">
+        https://api.deepfakedetector.io/v1
+    </div>
+    
+    
+    <h2><i class="fas fa-lock"></i> Authentication</h2>
+    <p>Include your API key in the request header:</p>
+    <div class="code-block">
+        Authorization: Bearer YOUR_API_KEY
+    </div>
+    
+    <div class="info">
+        <strong>Get your API key:</strong> Sign up and generate an API key from your dashboard.
+    </div>
+    
+    
+    <h2><i class="fas fa-exchange-alt"></i> Endpoints</h2>
+    
+    <div class="endpoint">
+        <div class="endpoint-method method-post">POST</div>
+        <div class="endpoint-path">/analyze</div>
+        <div class="endpoint-description">Upload a video for deepfake analysis</div>
+        
+        <h4>Request Parameters</h4>
+        <table class="params-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>file</td>
+                    <td><span class="type">file</span></td>
+                    <td>Video file (MP4, MOV, AVI, WebM, MKV)</td>
+                </tr>
+                <tr>
+                    <td>async</td>
+                    <td><span class="type">boolean</span></td>
+                    <td>Optional. Return immediately with task ID (default: false)</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="response-example">
+            <h4>Successful Response</h4>
+            <div class="status-code status-200">200 OK</div>
+            <div class="code-block">
+{
+  <span class="key">"status"</span>: <span class="string">"success"</span>,
+  <span class="key">"prediction"</span>: <span class="string">"fake"</span>,
+  <span class="key">"confidence"</span>: <span class="number">0.92</span>,
+  <span class="key">"real_probability"</span>: <span class="number">0.08</span>,
+  <span class="key">"fake_probability"</span>: <span class="number">0.92</span>,
+  <span class="key">"processing_time"</span>: <span class="number">45</span>
+}
+            </div>
+        </div>
+        
+        <div class="response-example">
+            <h4>Error Response</h4>
+            <div class="status-code status-400">400 Bad Request</div>
+            <div class="code-block">
+{
+  <span class="key">"status"</span>: <span class="string">"error"</span>,
+  <span class="key">"message"</span>: <span class="string">"No valid video file provided"</span>
+}
+            </div>
+        </div>
+    </div>
+    
+    <div class="endpoint">
+        <div class="endpoint-method method-get">GET</div>
+        <div class="endpoint-path">/status/{task_id}</div>
+        <div class="endpoint-description">Check the status of an async analysis task</div>
+        
+        <h4>Request Parameters</h4>
+        <table class="params-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>task_id</td>
+                    <td><span class="type">string</span></td>
+                    <td>Task ID from the analyze request</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="response-example">
+            <h4>Response</h4>
+            <div class="status-code status-200">200 OK</div>
+            <div class="code-block">
+{
+  <span class="key">"task_id"</span>: <span class="string">"abc123xyz"</span>,
+  <span class="key">"status"</span>: <span class="string">"completed"</span>,
+  <span class="key">"result"</span>: { ... }
+}
+            </div>
+        </div>
+    </div>
+    
+    
+    <h2><i class="fas fa-code"></i> Code Examples</h2>
+    
+    <h3>Python</h3>
+    <div class="code-block">
+import requests
+
+<span class="comment"># Upload a video for analysis</span>
+headers = {<span class="string">'Authorization'</span>: <span class="string">'Bearer YOUR_API_KEY'</span>}
+files = {<span class="string">'file'</span>: open(<span class="string">'video.mp4'</span>, <span class="string">'rb'</span>)}
+
+response = requests.post(
+    <span class="string">'https://api.deepfakedetector.io/v1/analyze'</span>,
+    headers=headers,
+    files=files
+)
+
+result = response.json()
+print(f<span class="string">"Prediction: {result['prediction']}"</span>)
+print(f<span class="string">"Confidence: {result['confidence']*100:.1f}%"</span>)
+    </div>
+    
+    <h3>JavaScript/Node.js</h3>
+    <div class="code-block">
+const axios = require(<span class="string">'axios'</span>);
+const FormData = require(<span class="string">'form-data'</span>);
+const fs = require(<span class="string">'fs'</span>);
+
+const form = new FormData();
+form.append(<span class="string">'file'</span>, fs.createReadStream(<span class="string">'video.mp4'</span>));
+
+axios.post(
+    <span class="string">'https://api.deepfakedetector.io/v1/analyze'</span>,
+    form,
+    {
+        headers: {
+            ...form.getHeaders(),
+            <span class="string">'Authorization'</span>: <span class="string">'Bearer YOUR_API_KEY'</span>
+        }
+    }
+).then(response => {
+    console.log(response.data);
+});
+    </div>
+    
+    <h3>cURL</h3>
+    <div class="code-block">
+curl -X POST https://api.deepfakedetector.io/v1/analyze \
+  -H <span class="string">"Authorization: Bearer YOUR_API_KEY"</span> \
+  -F <span class="string">"file=@video.mp4"</span>
+    </div>
+    
+    
+    <h2><i class="fas fa-exclamation-triangle"></i> Rate Limits & Quotas</h2>
+    <ul style="margin-left: 20px; color: #555; line-height: 1.8; margin-bottom: 15px;">
+        <li><strong>Free Tier:</strong> 10 requests per hour, 100 MB per request</li>
+        <li><strong>Pro Tier:</strong> 100 requests per hour, 500 MB per request</li>
+        <li><strong>Enterprise:</strong> Custom limits, dedicated support</li>
+    </ul>
+    
+    
+    <h2><i class="fas fa-book"></i> Error Codes</h2>
+    <table class="params-table">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Message</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>400</td>
+                <td>Bad Request</td>
+                <td>Invalid request format or missing required parameters</td>
+            </tr>
+            <tr>
+                <td>401</td>
+                <td>Unauthorized</td>
+                <td>Invalid or missing API key</td>
+            </tr>
+            <tr>
+                <td>413</td>
+                <td>Payload Too Large</td>
+                <td>File size exceeds limit for your tier</td>
+            </tr>
+            <tr>
+                <td>429</td>
+                <td>Too Many Requests</td>
+                <td>Rate limit exceeded</td>
+            </tr>
+            <tr>
+                <td>500</td>
+                <td>Internal Server Error</td>
+                <td>Server error during processing</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    
+    <h2><i class="fas fa-question-circle"></i> FAQ</h2>
+    <div style="margin: 15px 0;">
+        <strong>Q: Can I use the API programmatically for large-scale analysis?</strong><br>
+        A: Yes, contact us for enterprise plans with custom rate limits and dedicated support.
+    </div>
+    
+    <div style="margin: 15px 0;">
+        <strong>Q: What's the maximum file size?</strong><br>
+        A: Depends on your tier. Free tier: 100MB, Pro: 500MB, Enterprise: Custom.
+    </div>
+    
+    <div style="margin: 15px 0;">
+        <strong>Q: How long are results stored?</strong><br>
+        A: First 7 days free, then can be archived. Contact support for longer retention.
+    </div>
+    
+</div>
+{% endblock %}

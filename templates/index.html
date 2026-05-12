@@ -1,0 +1,326 @@
+{% extends "base.html" %}
+
+{% block title %}Deepfake Video Detector{% endblock %}
+
+{% block extra_css %}
+<style>
+  .hero {
+    background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9));
+    border-radius: 20px;
+    padding: 45px 35px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    margin-bottom: 30px;
+  }
+
+  .hero h1 {
+    font-size: 2.75rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+  }
+
+  .hero p {
+    color: #4b5563;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 25px;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .hero-buttons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 26px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .hero-buttons a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 35px rgba(102,126,234,0.2);
+  }
+
+  .primary-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+
+  .secondary-btn {
+    background: white;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+  }
+
+  .upload-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+    padding: 35px;
+    margin-bottom: 30px;
+  }
+
+  .upload-card h2 {
+    margin-bottom: 18px;
+    color: #1e293b;
+  }
+
+  .upload-area {
+    padding: 35px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 18px;
+    text-align: center;
+    transition: border-color 0.3s ease, background 0.3s ease;
+    background: #f8fafc;
+    cursor: pointer;
+  }
+
+  .upload-area:hover {
+    border-color: #667eea;
+    background: #eef2ff;
+  }
+
+  .upload-area i {
+    font-size: 2.75rem;
+    color: #667eea;
+    margin-bottom: 15px;
+  }
+
+  .upload-area p {
+    color: #475569;
+    margin-bottom: 12px;
+    font-size: 1rem;
+  }
+
+  .upload-area input[type=file] {
+    display: none;
+  }
+
+  .select-btn {
+    margin-top: 18px;
+    border: none;
+    outline: none;
+    padding: 12px 24px;
+    border-radius: 999px;
+    background: #667eea;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.25s ease;
+  }
+
+  .select-btn:hover {
+    background: #5563d4;
+  }
+
+  .file-meta {
+    margin-top: 22px;
+    color: #475569;
+    font-size: 0.95rem;
+  }
+
+  .result-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+    margin-top: 20px;
+  }
+
+  .result-card .label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .result-card .label.real {
+    color: #16a34a;
+  }
+
+  .result-card .label.fake {
+    color: #dc2626;
+  }
+
+  .result-stat {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+    margin-top: 22px;
+  }
+
+  .stat-box {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 18px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .stat-box strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #334155;
+  }
+
+  .stat-box span {
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 1.4rem;
+  }
+
+  .note-box {
+    margin-top: 18px;
+    padding: 18px 20px;
+    background: #eef2ff;
+    color: #334155;
+    border-radius: 16px;
+    border-left: 4px solid #667eea;
+  }
+
+  .quick-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-top: 35px;
+  }
+
+  .quick-card {
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #e2e8f0;
+    padding: 24px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .quick-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(102,126,234,0.12);
+  }
+
+  .quick-card h3 {
+    margin-bottom: 10px;
+    color: #1e293b;
+  }
+
+  .quick-card p {
+    color: #475569;
+    line-height: 1.75;
+  }
+
+  .hidden { display: none; }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1>Detect Deepfake & Real Videos Instantly</h1>
+  <p>Upload a video and let the AI model analyze it for authenticity. Our web interface makes it easy for anyone to test whether a video is real or deepfake.</p>
+  <div class="hero-buttons">
+    <a href="#detect" class="primary-btn"><i class="fas fa-video"></i> Start Detection</a>
+    <a href="/guide" class="secondary-btn"><i class="fas fa-book-open"></i> Read the Guide</a>
+  </div>
+</section>
+
+<section class="upload-card" id="detect">
+  <h2>Upload a Video for Analysis</h2>
+  <form method="post" enctype="multipart/form-data" id="uploadForm">
+    <label class="upload-area" for="fileInput" id="uploadArea">
+      <i class="fas fa-cloud-upload-alt"></i>
+      <p>Click here or drag a video file to upload</p>
+      <p>Supported formats: MP4, MOV, AVI, WebM, MKV</p>
+      <input type="file" name="file" id="fileInput" accept="video/mp4,video/webm,video/avi,video/quicktime,video/x-matroska">
+      <button type="button" class="select-btn">Choose File</button>
+    </label>
+
+    <div class="file-meta" id="fileMeta" style="display:none;">
+      Selected file: <strong id="fileName"></strong>
+    </div>
+
+    <div style="text-align:center; margin-top: 28px;">
+      <button type="submit" class="primary-btn" style="width: 100%; max-width: 260px;">Analyze Video</button>
+    </div>
+  </form>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="note-box" style="background:#fee2e2; border-left-color:#ef4444;">
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% if result %}
+  <div class="result-card">
+    <span class="label {% if result == 'Real' %}real{% else %}fake{% endif %}">
+      <i class="fas {% if result == 'Real' %}fa-check-circle{% else %}fa-exclamation-triangle{% endif %}"></i>
+      {{ result }} Video Detected
+    </span>
+    <p>Our AI model predicts this video is <strong>{{ result }}</strong> with <strong>{{ '%.1f'|format(confidence) }}%</strong> confidence.</p>
+
+    <div class="result-stat">
+      <div class="stat-box">
+        <strong>Overall Confidence</strong>
+        <span>{{ '%.1f'|format(confidence) }}%</span>
+      </div>
+      <div class="stat-box">
+        <strong>Real Probability</strong>
+        <span>{{ '%.1f'|format(real_probability) }}%</span>
+      </div>
+      <div class="stat-box">
+        <strong>Fake Probability</strong>
+        <span>{{ '%.1f'|format(fake_probability) }}%</span>
+      </div>
+    </div>
+
+    <div class="note-box">
+      <strong>Tip:</strong> Use the guide page to understand how the detection works and how to interpret results.
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+<section class="quick-links">
+  <div class="quick-card">
+    <h3><i class="fas fa-check-circle"></i> Fast Detection</h3>
+    <p>Upload your video and receive an authenticity prediction from the AI model in seconds.</p>
+  </div>
+  <div class="quick-card">
+    <h3><i class="fas fa-shield-alt"></i> Safe & Simple</h3>
+    <p>Files are processed temporarily and not stored permanently, making the service easy to use and private.</p>
+  </div>
+  <div class="quick-card">
+    <h3><i class="fas fa-lightbulb"></i> Built for Everyone</h3>
+    <p>No technical knowledge required. Anyone can upload a video and check whether it is real or deepfake.</p>
+  </div>
+</section>
+
+<script>
+  const uploadArea = document.getElementById('uploadArea');
+  const fileInput = document.getElementById('fileInput');
+  const fileMeta = document.getElementById('fileMeta');
+  const fileName = document.getElementById('fileName');
+
+  uploadArea.addEventListener('click', () => fileInput.click());
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length > 0) {
+      fileMeta.style.display = 'block';
+      fileName.textContent = fileInput.files[0].name;
+    } else {
+      fileMeta.style.display = 'none';
+    }
+  });
+</script>
+{% endblock %}
